@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <style type="text/css">
+        body,
+        html {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            font-family: "微软雅黑";
+        }
+
+        #allmap {
+            width: 100%;
+            height: 100%
+        }
+
+        p {
+            margin-left: 5px;
+            font-size: 14px;
+        }
+
+        .listContent {
+            width: 200px;
+            height: 300px;
+            background: #ffffff;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 9999;
+        }
+
+        .listContent div {
+            margin-bottom: 10px;
+            cursor: pointer;
+            text-align: center
+        }
+    </style>
+    <script src="./jqq.js">
+    </script>
+    <script type="text/javascript" src="http://api.map.baidu.com/api?key=&v=1.3&services=true"></script>
+    <title>百度地图添加多个多边形覆盖物</title>
+</head>
+
+<body>
+    <div id="allmap"></div>
+</body>
+
+</html>
+<script type="text/javascript">
+var list = [
+        {
+            'points':[
+                {
+                    'lng':'116.387112',
+                    'lat':'39.920977'
+                },
+                 {
+                    'lng': '117.385243',
+                    'lat': '40.073449'
+                },
+                 {
+                    'lng': '117.385243',
+                    'lat': '39.073449'
+                },
+                 {
+                    'lng': '116.387112',
+                     'lat': '39.920977'
+                }
+            ]
+        },
+        {
+            'points': [
+                {
+                    'lng': '116.342868',
+                    'lat': '40.07897'
+                },
+                {
+                    'lng': '118.344659',
+                    'lat': '40.073449'
+                },
+                {
+                    'lng': '119.351558',
+                    'lat': '39.077369'
+                },
+                {
+                    'lng': '116.342868',
+                    'lat': '40.07897'
+                }
+            ]
+        },
+    ]
+    // 百度地图API功能
+    var styleOptions = {
+        strokeColor: "red",    //边线颜色。
+        fillColor: "red",      //填充颜色。当参数为空时，圆形将没有填充效果。
+        strokeWeight: 3,       //边线的宽度，以像素为单位。
+        strokeOpacity: 0.8,	   //边线透明度，取值范围0 - 1。
+        fillOpacity: 0.6,      //填充的透明度，取值范围0 - 1。
+        strokeStyle: 'solid' //边线的样式，solid或dashed。
+    }
+    function showPolygon(points) {
+        for (var i = 0, listLen = points.length; i < listLen; i++) {
+            var listArr = points[i]
+            var point = []
+            for(var j = 0, pointsLen = listArr.points.length; j < pointsLen; j++){
+              point[j] = new BMap.Point(listArr.points[j].lng, listArr.points[j].lat)
+            }
+            var polygon = new BMap.Polygon(point, styleOptions);  //创建多边形
+            map.addOverlay(polygon); 
+        }
+    }
+
+    var map = new BMap.Map("allmap"); // 创建Map实例
+    map.enableScrollWheelZoom();
+    map.centerAndZoom(new BMap.Point(116.342868, 40.07897), 10);
+    showPolygon(list)
+</script>
